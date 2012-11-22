@@ -18,8 +18,40 @@ define project($url) {
   }
 }
 
-package {['emacs', 'puppet', 'git', 'inotify-tools']:
+define ppa($team, $ppa) {
+  exec {"add-ppa-$name":
+    command => "/usr/bin/add-apt-repository ppa:$team/$ppa",
+    creates => "/etc/apt/sources.list.d/${team}-${ppa}-$lsbdistcodename.list",
+    notify => Exec['apt-get-update'], 
+  }
+
+  exec {"ensure-apt-get-update-is-called-before-ppa-$name-is-used":
+    command => '/bin/true',
+    subscribe => Exec["add-ppa-$name"],
+    require => Exec['apt-get-update'],
+    refreshonly => true,
+  }
+}
+
+exec {'apt-get-update':
+  command => '/usr/bin/apt-get update',
+  refreshonly => true,
+}
+
+ppa {'emacs-snapshots':
+  team => 'cassou',
+  ppa => 'emacs',
+}
+
+package {['puppet', 'git', 'inotify-tools']:
   ensure => latest,
+  require => Exec['apt-get-update'],
+}
+
+package {'emacs-snapshot':
+  alias => emacs,
+  ensure => latest,
+  require => Ppa['emacs-snapshots'],
 }
 
 homedir {['work', 'projects']: }
