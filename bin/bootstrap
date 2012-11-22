@@ -1,0 +1,2 @@
+which puppet >/dev/null || sudo apt-get install puppet
+sudo puppet apply ~/projects/home-dir/bootstrap.pp
