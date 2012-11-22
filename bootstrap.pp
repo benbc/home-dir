@@ -48,27 +48,25 @@ package {['puppet', 'git', 'inotify-tools']:
   require => Exec['apt-get-update'],
 }
 
-package {'emacs-snapshot':
-  alias => emacs,
+package {['emacs-snapshot', 'emacs-snapshot-el']:
   ensure => latest,
   require => Ppa['emacs-snapshots'],
 }
 
-homedir {['work', 'projects']: }
+homedir {['work', 'projects', '.emacs.d']: }
 
 project {['home-dir']: 
   url => 'git@github.com:benbc/home-dir.git',
 }
 
-file {"$home/bin":
-  ensure => "$home/projects/home-dir/bin",
-  require => Project['home-dir'],
+define vcs-link() {
+  file {"$home/$name":
+    ensure => "$home/projects/home-dir/$name",
+    require => Project['home-dir'],
+  }
 }
 
-file {"$home/.gitconfig":
-  ensure => "$home/projects/home-dir/.gitconfig",
-  require => Project['home-dir'],
-}
+vcs-link{['bin', '.gitconfig', '.emacs.d/init.el']: }
 
 file {'/mnt/backups':
   ensure => directory,
