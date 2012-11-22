@@ -8,13 +8,27 @@ define homedir() {
   }
 }
 
-define project($url) {
-  $location = "$home/projects/$name"
-
+define repo($url, $location) {
   exec {"check-out-$name":
     command => "/usr/bin/sudo -u ben -i /usr/bin/git clone $url $location",
     creates => $location,
-    require => [Package['git'], Homedir['projects']],
+    require => Package['git'],
+  }
+}
+
+define project() {
+  repo {"project-$name":
+    location => "$home/projects/$name",
+    url => "git@github.com:benbc/$name.git",
+    require => Homedir['projects'],
+  }
+}
+
+define work($repo) {
+  repo {"work-$name":
+    location => "$home/work/$name",
+    url => "https://fmtstdscm01.thoughtworks.com/git/$repo",
+    require => [Homedir['work'], File['work-git-auth']],
   }
 }
 
@@ -78,8 +92,14 @@ package {'emacs-snapshot':
 
 homedir {['work', 'projects']: }
 
-project {['home-dir']: 
-  url => 'git@github.com:benbc/home-dir.git',
+project {'home-dir': }
+
+file {'work-git-auth':
+  path => "$home/.netrc",
+  content => template("$home/projects/home-dir/.netrc")
+}
+work {'saas':
+  repo => 'mingle-saas',
 }
 
 vcs-link {['bin', '.gitconfig', 'xmobarrrc', '.Xresources', '.xsessionrc']: }

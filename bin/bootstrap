@@ -1,2 +1,11 @@
+#!/bin/bash
+
+if [[ -f ~/.bootstrap.local ]]; then
+    . ~/.bootstrap.local
+else
+    echo 'You need to create ~/.bootstrap.local from .bootstrap.local.template.'
+    exit 1
+fi
+
 which puppet >/dev/null || sudo apt-get install puppet
-sudo puppet apply ~/projects/home-dir/bootstrap.pp
+sudo -E puppet apply ~/projects/home-dir/bootstrap.pp
