@@ -1,0 +1,41 @@
+urxvt*foreground: #f2f2f2
+urxvt*background: #101010
+urxvt*color0:    #6c6c6c
+urxvt*color1:    #e9897c
+urxvt*color2:    #b6e77d
+urxvt*color3:    #ecebbe
+urxvt*color4:    #a9cdeb
+urxvt*color5:    #ea96eb
+urxvt*color6:    #c9caec
+urxvt*color7:    #f2f2f2
+urxvt*color8:    #747474
+urxvt*color9:    #f99286
+urxvt*color10:    #c3f786
+urxvt*color11:    #fcfbcc
+urxvt*color12:    #b6defb
+urxvt*color13:    #fba1fb
+urxvt*color14:    #d7d9fc
+urxvt*color15:    #e2e2e2
+urxvt*font: xft:DejaVu Sans Mono:antialias=true:pixelsize=12
+urxvt*saveLines: 1024
+
+scratchpad*foreground: #f2f2f2
+scratchpad*background: #101010
+scratchpad*color0:    #6c6c6c
+scratchpad*color1:    #e9897c
+scratchpad*color2:    #b6e77d
+scratchpad*color3:    #ecebbe
+scratchpad*color4:    #a9cdeb
+scratchpad*color5:    #ea96eb
+scratchpad*color6:    #c9caec
+scratchpad*color7:    #f2f2f2
+scratchpad*color8:    #747474
+scratchpad*color9:    #f99286
+scratchpad*color10:    #c3f786
+scratchpad*color11:    #fcfbcc
+scratchpad*color12:    #b6defb
+scratchpad*color13:    #fba1fb
+scratchpad*color14:    #d7d9fc
+scratchpad*color15:    #e2e2e2
+
+scratchpad*font: xft:DejaVu Sans Mono:antialias=true:pixelsize=12

@@ -43,12 +43,13 @@ ppa {'emacs-snapshots':
   ppa => 'emacs',
 }
 
-package {['puppet', 'git', 'inotify-tools']:
+package {['puppet', 'puppet-el', 'git', 'inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
+          'suckless-tools']:
   ensure => latest,
   require => Exec['apt-get-update'],
 }
 
-package {['emacs-snapshot', 'emacs-snapshot-el']:
+package {'emacs-snapshot':
   ensure => latest,
   require => Ppa['emacs-snapshots'],
 }
