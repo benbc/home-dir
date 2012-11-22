@@ -33,6 +33,22 @@ define ppa($team, $ppa) {
   }
 }
 
+define vcs-link($dir=false) {
+  if ($dir) {
+    homedir {$dir: }
+    $requires = [Project['home-dir'], Homedir[$dir]]
+    $path = "$dir/$name"
+  } else {
+    $requires = Project['home-dir']
+    $path = $name
+  }
+  
+  file {"$home/$path":
+    ensure => "$home/projects/home-dir/$path",
+    require => $requires,
+  }
+}
+
 exec {'apt-get-update':
   command => '/usr/bin/apt-get update',
   refreshonly => true,
@@ -64,22 +80,6 @@ homedir {['work', 'projects']: }
 
 project {['home-dir']: 
   url => 'git@github.com:benbc/home-dir.git',
-}
-
-define vcs-link($dir=false) {
-  if ($dir) {
-    homedir {$dir: }
-    $requires = [Project['home-dir'], Homedir[$dir]]
-    $path = "$dir/$name"
-  } else {
-    $requires = Project['home-dir']
-    $path = $name
-  }
-  
-  file {"$home/$path":
-    ensure => "$home/projects/home-dir/$path",
-    require => $requires,
-  }
 }
 
 vcs-link {['bin', '.gitconfig']: }
