@@ -1,0 +1,31 @@
+#!/bin/sh -u
+
+if [ $# -lt 2 ]; then
+  # Not enough arguments
+  echo "Usage: `basename $0` \"command --to --execute\" files to watch"
+  exit 64
+fi
+
+COMMAND=$1; shift
+FILES=$@
+EXCLUDED="(.*/\.#.*)|(.*/#.*#)|(.*_flymake.*)" # various temporary emacs files:
+                                                 #     **/.#foo.rb
+                                                 #     **/#foo.rb#
+                                                 #     **/foo_flymake.rb
+
+run() {
+    sh -c "$COMMAND"
+    if [ $? = 0 ]; then
+        echo success
+    else
+        echo "failure: $?"
+    fi
+}
+
+run
+while inotifywait --recursive --quiet --exclude "$EXCLUDED" \
+    --event modify --event move --event create --event delete \
+    $FILES
+do
+    run
+done

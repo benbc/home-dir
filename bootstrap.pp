@@ -18,7 +18,7 @@ define project($url) {
   }
 }
 
-package {['emacs', 'puppet', 'git']:
+package {['emacs', 'puppet', 'git', 'inotify-tools']:
   ensure => latest,
 }
 
