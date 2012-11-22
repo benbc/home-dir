@@ -38,6 +38,12 @@ exec {'apt-get-update':
   refreshonly => true,
 }
 
+file {'apt-autoremove':
+  path => '/etc/apt/apt.conf.d/always-autoremove',
+  content=>'APT::Get::AutomaticRemove "true";
+APT::Get::Assume-Yes "true";',
+}
+
 ppa {'emacs-snapshots':
   team => 'cassou',
   ppa => 'emacs',
@@ -46,7 +52,7 @@ ppa {'emacs-snapshots':
 package {['puppet', 'puppet-el', 'git', 'inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
           'suckless-tools']:
   ensure => latest,
-  require => Exec['apt-get-update'],
+  require => [Exec['apt-get-update'], File['apt-autoremove']],
 }
 
 package {'emacs-snapshot':
