@@ -8,3 +8,5 @@
         rs = log master --not review --pretty=format:'%h %Cred%an%Creset %s' --reverse --topo-order
         rl = log master --not review --patch --stat --reverse --topo-order --decorate
         rp = push self master:review
+[branch]
+        autosetuprebase = always
