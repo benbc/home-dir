@@ -54,20 +54,37 @@ package {'emacs-snapshot':
   require => Ppa['emacs-snapshots'],
 }
 
-homedir {['work', 'projects', '.emacs.d']: }
+homedir {['work', 'projects']: }
 
 project {['home-dir']: 
   url => 'git@github.com:benbc/home-dir.git',
 }
 
-define vcs-link() {
-  file {"$home/$name":
-    ensure => "$home/projects/home-dir/$name",
-    require => Project['home-dir'],
+define vcs-link($dir=false) {
+  if ($dir) {
+    homedir {$dir: }
+    $requires = [Project['home-dir'], Homedir[$dir]]
+    $path = "$dir/$name"
+  } else {
+    $requires = Project['home-dir']
+    $path = $name
+  }
+  
+  file {"$home/$path":
+    ensure => "$home/projects/home-dir/$path",
+    require => $requires,
   }
 }
 
-vcs-link{['bin', '.gitconfig', '.emacs.d/init.el']: }
+vcs-link {['bin', '.gitconfig']: }
+
+vcs-link {'init.el':
+  dir => '.emacs.d',
+}
+
+vcs-link {'xmonad.hs':
+  dir => '.xmonad',
+}
 
 file {'/mnt/backups':
   ensure => directory,
