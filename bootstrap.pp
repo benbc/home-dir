@@ -82,7 +82,7 @@ project {['home-dir']:
   url => 'git@github.com:benbc/home-dir.git',
 }
 
-vcs-link {['bin', '.gitconfig']: }
+vcs-link {['bin', '.gitconfig', 'xmobarrrc', '.Xresources', '.xsessionrc']: }
 
 vcs-link {'init.el':
   dir => '.emacs.d',
