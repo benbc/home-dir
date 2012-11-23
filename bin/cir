@@ -1,0 +1,15 @@
+#!/bin/sh -eu
+
+if [ -e .hg ] || [ -e ../.hg ]
+then
+    MESSAGE=`hg log -l1 --template '{desc}'`
+    hg ci -m"$MESSAGE" -u`hg log -l1 --template '{author}'`
+    echo "Message was: $MESSAGE"
+elif [ -e .git ]
+then
+    MESSAGE=`git log -n1 --pretty="%s"`
+    git commit -m"$MESSAGE"
+else
+    echo "unknown VCS"
+    exit 1
+fi

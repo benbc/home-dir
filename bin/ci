@@ -1,0 +1,26 @@
+#!/bin/sh -eu
+
+if [ $# = 0 ]
+then
+ echo "Specify message"
+ exit 1
+fi
+
+if [ -z "$STORY" ]
+then
+  echo "A STORY must be set."
+  exit 1
+fi
+
+MESSAGE=$1
+
+if [ -e .hg ] || [ -e ../.hg ]
+then
+    hg ci -m "[#$STORY] $MESSAGE" -u${HGUSER:-$USER}
+elif [ -e .git ]
+then
+    git commit -m "[#$STORY] $MESSAGE"
+else
+    echo "unknown VCS"
+    exit 1
+fi
