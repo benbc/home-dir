@@ -1,5 +1,8 @@
 (require 'package)
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(global-auto-revert-mode 1)
+
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
@@ -19,6 +22,3 @@
 
 (require 'color-theme)
 (color-theme-arjen)
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-(global-auto-revert-mode 1)
