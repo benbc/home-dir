@@ -1,0 +1,1 @@
+export EDITOR="ec -nw"

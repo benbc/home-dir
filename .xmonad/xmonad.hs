@@ -16,7 +16,7 @@ myManageHook = composeAll
                <+> scratchpadManageHook (W.RationalRect 0.25 0.1 0.5 0.8)
                <+> manageHook defaultConfig
 
-myLayoutHook = avoidStruts $ Tall 1 (3/100) (1/2) ||| Full ||| Mirror (Tall 2 (3/100) (3/4))
+myLayoutHook = avoidStruts $ Tall 1 (1/100) (1/2) ||| Full ||| Mirror (Tall 2 (3/100) (3/4))
 
 myConfig xmproc = defaultConfig
                   { manageHook = myManageHook

@@ -17,7 +17,7 @@ case "$DESKTOP_SESSION" in
 	nm-applet --sm-disable &
 	gnome-volume-control-applet &
         firefox &
-        emacs &
+        ec &
         (sleep 60; weather) &
 	;;
 esac

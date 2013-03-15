@@ -1,0 +1,2 @@
+export LD_LIBRARY_PATH=/usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/lib/amd64/
+java -jar ~/Downloads/minecraft.jar -Xmx1024M -Xms512M

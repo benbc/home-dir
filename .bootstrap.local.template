@@ -1,1 +1,2 @@
 export FACTER_WORK_GIT_PASSWORD=<password>
+export FACTER_IRC_PASSWORD=<password>

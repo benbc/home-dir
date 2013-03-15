@@ -36,7 +36,7 @@ define ppa($team, $ppa) {
   exec {"add-ppa-$name":
     command => "/usr/bin/add-apt-repository ppa:$team/$ppa",
     creates => "/etc/apt/sources.list.d/${team}-${ppa}-$lsbdistcodename.list",
-    notify => Exec['apt-get-update'], 
+    notify => Exec['apt-get-update'],
   }
 
   exec {"ensure-apt-get-update-is-called-before-ppa-$name-is-used":
@@ -56,7 +56,7 @@ define vcs-link($dir=false) {
     $requires = Project['home-dir']
     $path = $name
   }
-  
+
   file {"$home/$path":
     ensure => "$home/projects/home-dir/$path",
     require => $requires,
@@ -80,7 +80,13 @@ ppa {'emacs-snapshots':
 }
 
 package {['puppet', 'puppet-el', 'git', 'inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
-          'suckless-tools', 'graphviz']:
+          'suckless-tools', 'graphviz', 'vpnc', 'tree', 'powertop', 'gimp', 'exuberant-ctags', 'openssh-server',
+          'vinagre', 'ruby1.9.3', 'rubygems', 'byobu', 'inkscape']:
+  ensure => latest,
+  require => [Exec['apt-get-update'], File['apt-autoremove']],
+}
+
+package {['clojure']:
   ensure => latest,
   require => [Exec['apt-get-update'], File['apt-autoremove']],
 }
@@ -90,22 +96,26 @@ package {'emacs-snapshot':
   require => Ppa['emacs-snapshots'],
 }
 
-homedir {['work', 'projects']: }
+homedir {['work', 'projects', 'sources']: }
 
 project {'home-dir': }
 
 file {'work-git-auth':
   path => "$home/.netrc",
-  content => template("$home/projects/home-dir/.netrc")
+  content => template("$home/projects/home-dir/.netrc"),
 }
 work {'saas':
   repo => 'mingle-saas',
 }
 
-vcs-link {['bin', '.gitconfig', 'xmobarrrc', '.Xresources', '.xsessionrc']: }
+vcs-link {['bin', '.gitconfig', 'xmobarrrc', '.Xresources', '.xsessionrc', '.bash_aliases']: }
 
-vcs-link {'init.el':
-  dir => '.emacs.d',
+file {"$home/.emacs.d":
+  ensure => directory,
+}
+
+file {"$home/.emacs.d/init.el":
+  content => template("$home/projects/home-dir/.emacs.d/init.el"),
 }
 
 vcs-link {'xmonad.hs':
@@ -123,4 +133,9 @@ mount {'/mnt/backups':
   options => defaults,
   atboot => true,
   require => File['/mnt/backups'],
+}
+
+# Chess
+package {['scid', 'stockfish']:
+  ensure => latest,
 }
