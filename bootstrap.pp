@@ -112,7 +112,7 @@ work {'saas':
   repo => 'mingle-saas',
 }
 
-vcs-link {['bin', '.gitconfig', 'xmobarrrc', '.Xresources', '.xsessionrc', '.bash_aliases']: }
+vcs-link {['bin', '.gitconfig', '.xmobarrc', '.Xresources', '.xsessionrc', '.bash_aliases']: }
 
 file {"$home/.emacs.d":
   ensure => directory,
