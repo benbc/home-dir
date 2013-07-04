@@ -1,0 +1,2 @@
+#!/bin/sh -eu
+ssh -i ~/.ssh/minecraft.pem ubuntu@54.247.69.26
