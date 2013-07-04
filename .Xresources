@@ -39,3 +39,5 @@ scratchpad*color14:    #d7d9fc
 scratchpad*color15:    #e2e2e2
 
 scratchpad*font: xft:DejaVu Sans Mono:antialias=true:pixelsize=12
+
+xdvi.editor: ec --no-wait +%l %f
