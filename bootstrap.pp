@@ -147,3 +147,13 @@ mount {'/mnt/backups':
 package {['scid', 'stockfish']:
   ensure => latest,
 }
+
+# Latex
+package {['texlive', 'texlive-humanities', 'dvipng']:
+  ensure => latest,
+}
+
+# Erlang
+package {['erlang', 'erlang-manpages', 'erlang-doc']:
+  ensure => latest,
+}
