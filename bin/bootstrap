@@ -9,3 +9,9 @@ fi
 
 which puppet >/dev/null || sudo apt-get install puppet
 sudo -E puppet apply ~/projects/home-dir/bootstrap.pp
+
+for f in ~/.ssh/id_rsa ~/.ssh/id_rsa.pub ~/.ssh/minecraft.pem; do
+    if [[ ! -f $f ]]; then
+        echo "You need to manually create $f."
+    fi
+done
