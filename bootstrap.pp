@@ -83,7 +83,7 @@ ppa {'emacs-snapshots':
 
 package {['puppet', 'puppet-el', 'git', 'inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
           'suckless-tools', 'graphviz', 'vpnc', 'tree', 'powertop', 'gimp', 'exuberant-ctags', 'openssh-server',
-          'vinagre', 'ruby1.9.3', 'rubygems', 'byobu', 'inkscape']:
+          'vinagre', 'ruby1.9.3', 'rubygems', 'byobu', 'inkscape', 'gnuplot']:
   ensure => latest,
   require => [Exec['apt-get-update'], File['apt-autoremove']],
 }
