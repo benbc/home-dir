@@ -60,6 +60,8 @@ define vcs-link($dir=false) {
   file {"$home/$path":
     ensure => "$home/projects/home-dir/$path",
     require => $requires,
+    owner => ben,
+    group => ben,
   }
 }
 
@@ -103,6 +105,8 @@ project {'home-dir': }
 file {'work-git-auth':
   path => "$home/.netrc",
   content => template("$home/projects/home-dir/.netrc"),
+  owner => ben,
+  group => ben,
 }
 work {'saas':
   repo => 'mingle-saas',
@@ -112,10 +116,14 @@ vcs-link {['bin', '.gitconfig', 'xmobarrrc', '.Xresources', '.xsessionrc', '.bas
 
 file {"$home/.emacs.d":
   ensure => directory,
+  owner => ben,
+  group => ben,
 }
 
 file {"$home/.emacs.d/init.el":
   content => template("$home/projects/home-dir/.emacs.d/init.el"),
+  owner => ben,
+  group => ben,
 }
 
 vcs-link {'xmonad.hs':
