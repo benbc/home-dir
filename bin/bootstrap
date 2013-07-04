@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eu
 
 if [[ -f ~/.bootstrap.local ]]; then
     . ~/.bootstrap.local
