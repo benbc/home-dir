@@ -10,3 +10,5 @@
         rp = push --force self master:review
 [branch]
         autosetuprebase = always
+[push]
+	default = simple
