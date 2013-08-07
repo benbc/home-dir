@@ -1,1 +1,2 @@
 export FACTER_IRC_PASSWORD=<password>
+export FACTER_BOOTSTRAP_TYPE=<minimal|full>

@@ -1,61 +1,28 @@
 $home = '/home/ben'
 
-define homedir() {
-  file {"$home/$name":
-    ensure => directory,
-    owner => ben,
-    group => ben,
+class selector {
+case $bootstrap_type {
+  'minimal': {
+    notice("minimal install")
+    require minimal
+  }
+  'full': {
+    notice("full install")
+    require full
+  }
+  default: {
+    fail("no install selected")
   }
 }
-
-define repo($url, $location) {
-  exec {"check-out-$name":
-    command => "/usr/bin/sudo -u ben -i /usr/bin/git clone $url $location",
-    creates => $location,
-    require => Package['git'],
-  }
 }
 
-define project() {
-  repo {"project-$name":
-    location => "$home/projects/$name",
-    url => "git@github.com:benbc/$name.git",
-    require => Homedir['projects'],
-  }
+class minimal {
+  require definitions
 }
 
-define ppa($team, $ppa) {
-  exec {"add-ppa-$name":
-    command => "/usr/bin/add-apt-repository ppa:$team/$ppa",
-    creates => "/etc/apt/sources.list.d/${team}-${ppa}-$lsbdistcodename.list",
-    notify => Exec['apt-get-update'],
-  }
-
-  exec {"ensure-apt-get-update-is-called-before-ppa-$name-is-used":
-    command => '/bin/true',
-    subscribe => Exec["add-ppa-$name"],
-    require => Exec['apt-get-update'],
-    refreshonly => true,
-  }
-}
-
-define vcs-link($dir=false) {
-  if ($dir) {
-    homedir {$dir: }
-    $requires = [Project['home-dir'], Homedir[$dir]]
-    $path = "$dir/$name"
-  } else {
-    $requires = Project['home-dir']
-    $path = $name
-  }
-
-  file {"$home/$path":
-    ensure => "$home/projects/home-dir/$path",
-    require => $requires,
-    owner => ben,
-    group => ben,
-  }
-}
+class full {
+require definitions
+require minimal
 
 exec {'apt-get-update':
   command => '/usr/bin/apt-get update',
@@ -139,3 +106,65 @@ package {['texlive', 'texlive-humanities', 'dvipng']:
 package {['erlang', 'erlang-manpages', 'erlang-doc']:
   ensure => latest,
 }
+}
+
+class definitions {
+define homedir() {
+  file {"$home/$name":
+    ensure => directory,
+    owner => ben,
+    group => ben,
+  }
+}
+
+define repo($url, $location) {
+  exec {"check-out-$name":
+    command => "/usr/bin/sudo -u ben -i /usr/bin/git clone $url $location",
+    creates => $location,
+    require => Package['git'],
+  }
+}
+
+define project() {
+  repo {"project-$name":
+    location => "$home/projects/$name",
+    url => "git@github.com:benbc/$name.git",
+    require => Homedir['projects'],
+  }
+}
+
+define ppa($team, $ppa) {
+  exec {"add-ppa-$name":
+    command => "/usr/bin/add-apt-repository ppa:$team/$ppa",
+    creates => "/etc/apt/sources.list.d/${team}-${ppa}-$lsbdistcodename.list",
+    notify => Exec['apt-get-update'],
+  }
+
+  exec {"ensure-apt-get-update-is-called-before-ppa-$name-is-used":
+    command => '/bin/true',
+    subscribe => Exec["add-ppa-$name"],
+    require => Exec['apt-get-update'],
+    refreshonly => true,
+  }
+}
+
+define vcs-link($dir=false) {
+  if ($dir) {
+    homedir {$dir: }
+    $requires = [Project['home-dir'], Homedir[$dir]]
+    $path = "$dir/$name"
+  } else {
+    $requires = Project['home-dir']
+    $path = $name
+  }
+
+  file {"$home/$path":
+    ensure => "$home/projects/home-dir/$path",
+    require => $requires,
+    owner => ben,
+    group => ben,
+  }
+}
+}
+
+include selector
