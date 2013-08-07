@@ -19,7 +19,7 @@ class selector {
 class minimal {
   require definitions
   require common
-  package {['puppet', 'puppet-el']:
+  package {['puppet-el']:
     ensure => latest,
     require => [Exec['apt-get-update'], File['apt-autoremove']],
   }
