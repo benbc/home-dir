@@ -4,11 +4,11 @@ class selector {
   case $bootstrap_type {
     'minimal': {
       notice("minimal install")
-      require minimal
+      include minimal
     }
     'full': {
       notice("full install")
-      require full
+      include full
     }
     default: {
       fail("no install selected")
@@ -17,26 +17,39 @@ class selector {
 }
 
 class minimal {
-  require definitions
-  require common
+  include definitions
+  include common
 
-  ppa {'emacs-snapshots':
+  definitions::ppa {'emacs24':
     team => 'cassou',
     ppa => 'emacs',
   }
 
-  package {'emacs-snapshot':
-    require => Ppa['emacs-snapshots'],
+  package {['emacs24', 'emacs24-el', 'emacs24-common-non-dfsg']:
+    require => Definitions::Ppa['emacs24'],
+  }
+
+  file {"$home/.emacs.d":
+    ensure => directory,
+    owner => ben,
+    group => ben,
+  }
+
+  file {"$home/.emacs.d/init.el":
+    content => template("$home/projects/home-dir/.emacs.d/init.el"),
+    owner => ben,
+    group => ben,
   }
 
   package {['puppet-el']:
+    require => Package['emacs24'],
   }
 }
 
 class full {
-  require definitions
-  require common
-  require minimal
+  include definitions
+  include common
+  include minimal
 
   package {['git', 'inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
             'suckless-tools', 'graphviz', 'vpnc', 'tree', 'powertop', 'gimp', 'exuberant-ctags', 'openssh-server',
@@ -51,18 +64,6 @@ class full {
   project {'home-dir': }
 
   vcs-link {['bin', '.gitconfig', '.xmobarrc', '.Xresources', '.xsessionrc', '.bash_aliases']: }
-
-  file {"$home/.emacs.d":
-    ensure => directory,
-    owner => ben,
-    group => ben,
-  }
-
-  file {"$home/.emacs.d/init.el":
-    content => template("$home/projects/home-dir/.emacs.d/init.el"),
-    owner => ben,
-    group => ben,
-  }
 
   vcs-link {'xmonad.hs':
     dir => '.xmonad',
