@@ -18,29 +18,24 @@ case $bootstrap_type {
 
 class minimal {
   require definitions
+  require common
+package {['puppet', 'puppet-el']:
+  ensure => latest,
+  require => [Exec['apt-get-update'], File['apt-autoremove']],
+}
 }
 
 class full {
 require definitions
+require common
 require minimal
-
-exec {'apt-get-update':
-  command => '/usr/bin/apt-get update',
-  refreshonly => true,
-}
-
-file {'apt-autoremove':
-  path => '/etc/apt/apt.conf.d/always-autoremove',
-  content=>'APT::Get::AutomaticRemove "true";
-APT::Get::Assume-Yes "true";',
-}
 
 ppa {'emacs-snapshots':
   team => 'cassou',
   ppa => 'emacs',
 }
 
-package {['puppet', 'puppet-el', 'git', 'inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
+package {['git', 'inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
           'suckless-tools', 'graphviz', 'vpnc', 'tree', 'powertop', 'gimp', 'exuberant-ctags', 'openssh-server',
           'vinagre', 'ruby1.9.3', 'rubygems', 'byobu', 'inkscape', 'gnuplot']:
   ensure => latest,
@@ -105,6 +100,19 @@ package {['texlive', 'texlive-humanities', 'dvipng']:
 # Erlang
 package {['erlang', 'erlang-manpages', 'erlang-doc']:
   ensure => latest,
+}
+}
+
+class common {
+exec {'apt-get-update':
+  command => '/usr/bin/apt-get update',
+  refreshonly => true,
+}
+
+file {'apt-autoremove':
+  path => '/etc/apt/apt.conf.d/always-autoremove',
+  content=>'APT::Get::AutomaticRemove "true";
+APT::Get::Assume-Yes "true";',
 }
 }
 
