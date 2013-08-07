@@ -39,7 +39,7 @@
 (setq rcirc-default-user-name "benbc")
 (setq rcirc-default-user-full-name "Ben Butler-Cole")
 (setq rcirc-server-alist
-      '(("irc.freenode.org" :channels ("#minglesaas"))))
+      '(("irc.freenode.org" :channels ())))
 (setq rcirc-authinfo
       '(("freenode" nickserv "benbc" "<%= @irc_password %>")))
 (rcirc-track-minor-mode 1)

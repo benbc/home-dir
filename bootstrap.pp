@@ -24,14 +24,6 @@ define project() {
   }
 }
 
-define work($repo) {
-  repo {"work-$name":
-    location => "$home/work/$name",
-    url => "https://fmtstdscm01.thoughtworks.com/git/$repo",
-    require => [Homedir['work'], File['work-git-auth']],
-  }
-}
-
 define ppa($team, $ppa) {
   exec {"add-ppa-$name":
     command => "/usr/bin/add-apt-repository ppa:$team/$ppa",
@@ -98,19 +90,9 @@ package {'emacs-snapshot':
   require => Ppa['emacs-snapshots'],
 }
 
-homedir {['work', 'projects', 'sources']: }
+homedir {['projects', 'sources']: }
 
 project {'home-dir': }
-
-file {'work-git-auth':
-  path => "$home/.netrc",
-  content => template("$home/projects/home-dir/.netrc"),
-  owner => ben,
-  group => ben,
-}
-work {'saas':
-  repo => 'mingle-saas',
-}
 
 vcs-link {['bin', '.gitconfig', '.xmobarrc', '.Xresources', '.xsessionrc', '.bash_aliases']: }
 

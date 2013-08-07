@@ -1,5 +1,0 @@
-SERVER=${1-fremont}
-
-sudo vpnc-disconnect
-sudo vpnc-connect --enable-1des $SERVER
-sudo route del -net 192.168.1.0 gw 0.0.0.0 netmask 255.255.255.0 metric 0 dev tun0
