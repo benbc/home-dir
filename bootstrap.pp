@@ -67,19 +67,6 @@ class full {
     dir => '.xmonad',
   }
 
-  file {'/mnt/backups':
-    ensure => directory,
-  }
-
-  mount {'/mnt/backups':
-    device => '/dev/sda4',
-    ensure => mounted,
-    fstype => auto,
-    options => defaults,
-    atboot => true,
-    require => File['/mnt/backups'],
-  }
-
   # Chess
   package {['scid', 'stockfish']:
   }
