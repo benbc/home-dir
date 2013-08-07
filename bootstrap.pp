@@ -17,46 +17,17 @@ class selector {
 }
 
 class minimal {
-  include definitions
-  include common
+  include emacs
 
   definitions::homedir {'projects': }
 
   definitions::project {'home-dir': }
 
   definitions::vcs-link {['bin', '.gitconfig', '.bash_aliases']: }
-  package {['git', 'exuberant-ctags']:
-  }
-
-  definitions::ppa {'emacs24':
-    team => 'cassou',
-    ppa => 'emacs',
-  }
-
-  package {['emacs24', 'emacs24-el', 'emacs24-common-non-dfsg']:
-    require => Definitions::Ppa['emacs24'],
-  }
-
-  file {"$home/.emacs.d":
-    ensure => directory,
-    owner => ben,
-    group => ben,
-  }
-
-  file {"$home/.emacs.d/init.el":
-    content => template("$home/projects/home-dir/.emacs.d/init.el"),
-    owner => ben,
-    group => ben,
-  }
-
-  package {['puppet-el']:
-    require => Package['emacs24'],
-  }
+  package {'git': }
 }
 
 class full {
-  include definitions
-  include common
   include minimal
 
   package {['inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
@@ -85,6 +56,35 @@ class full {
 
   # Erlang
   package {['erlang', 'erlang-manpages', 'erlang-doc']:
+  }
+}
+
+class emacs {
+  package {'exuberant-ctags': }
+
+  definitions::ppa {'emacs24':
+    team => 'cassou',
+    ppa => 'emacs',
+  }
+
+  package {['emacs24', 'emacs24-el', 'emacs24-common-non-dfsg']:
+    require => Definitions::Ppa['emacs24'],
+  }
+
+  file {"$home/.emacs.d":
+    ensure => directory,
+    owner => ben,
+    group => ben,
+  }
+
+  file {"$home/.emacs.d/init.el":
+    content => template("$home/projects/home-dir/.emacs.d/init.el"),
+    owner => ben,
+    group => ben,
+  }
+
+  package {['puppet-el']:
+    require => Package['emacs24'],
   }
 }
 
@@ -170,4 +170,6 @@ class definitions {
   }
 }
 
+include definitions
+include common
 include selector
