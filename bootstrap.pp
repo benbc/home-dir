@@ -86,11 +86,16 @@ class common {
   Package {
     ensure => present,
     require => [Exec['apt-get-update'], File['apt-autoremove']],
+    before => [Exec['apt-get-upgrade']],
   }
 
   exec {'apt-get-update':
     command => '/usr/bin/apt-get update',
-    refreshonly => true,
+  }
+
+  exec {'apt-get-upgrade':
+    command => '/usr/bin/apt-get upgrade',
+    require => [Exec['apt-get-update']],
   }
 
   file {'apt-autoremove':
