@@ -20,6 +20,14 @@ class minimal {
   include definitions
   include common
 
+  definitions::homedir {'projects': }
+
+  definitions::project {'home-dir': }
+
+  definitions::vcs-link {['bin', '.gitconfig', '.bash_aliases']: }
+  package {['git', 'exuberant-ctags']:
+  }
+
   definitions::ppa {'emacs24':
     team => 'cassou',
     ppa => 'emacs',
@@ -51,21 +59,19 @@ class full {
   include common
   include minimal
 
-  package {['git', 'inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
-            'suckless-tools', 'graphviz', 'vpnc', 'tree', 'powertop', 'gimp', 'exuberant-ctags', 'openssh-server',
+  package {['inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
+            'suckless-tools', 'graphviz', 'vpnc', 'tree', 'powertop', 'gimp', 'openssh-server',
             'vinagre', 'ruby1.9.3', 'rubygems', 'byobu', 'inkscape', 'gnuplot']:
   }
 
   package {['clojure']:
   }
 
-  homedir {['projects', 'sources']: }
+  definitions::homedir {'sources': }
 
-  project {'home-dir': }
+  definitions::vcs-link {['.xmobarrc', '.Xresources', '.xsessionrc']: }
 
-  vcs-link {['bin', '.gitconfig', '.xmobarrc', '.Xresources', '.xsessionrc', '.bash_aliases']: }
-
-  vcs-link {'xmonad.hs':
+  definitions::vcs-link {'xmonad.hs':
     dir => '.xmonad',
   }
 
