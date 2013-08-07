@@ -19,6 +19,16 @@ class selector {
 class minimal {
   require definitions
   require common
+
+  ppa {'emacs-snapshots':
+    team => 'cassou',
+    ppa => 'emacs',
+  }
+
+  package {'emacs-snapshot':
+    require => Ppa['emacs-snapshots'],
+  }
+
   package {['puppet-el']:
   }
 }
@@ -28,21 +38,12 @@ class full {
   require common
   require minimal
 
-  ppa {'emacs-snapshots':
-    team => 'cassou',
-    ppa => 'emacs',
-  }
-
   package {['git', 'inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
             'suckless-tools', 'graphviz', 'vpnc', 'tree', 'powertop', 'gimp', 'exuberant-ctags', 'openssh-server',
             'vinagre', 'ruby1.9.3', 'rubygems', 'byobu', 'inkscape', 'gnuplot']:
   }
 
   package {['clojure']:
-  }
-
-  package {'emacs-snapshot':
-    require => Ppa['emacs-snapshots'],
   }
 
   homedir {['projects', 'sources']: }
