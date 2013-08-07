@@ -20,8 +20,6 @@ class minimal {
   require definitions
   require common
   package {['puppet-el']:
-    ensure => latest,
-    require => [Exec['apt-get-update'], File['apt-autoremove']],
   }
 }
 
@@ -38,17 +36,12 @@ class full {
   package {['git', 'inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
             'suckless-tools', 'graphviz', 'vpnc', 'tree', 'powertop', 'gimp', 'exuberant-ctags', 'openssh-server',
             'vinagre', 'ruby1.9.3', 'rubygems', 'byobu', 'inkscape', 'gnuplot']:
-              ensure => latest,
-              require => [Exec['apt-get-update'], File['apt-autoremove']],
   }
 
   package {['clojure']:
-    ensure => latest,
-    require => [Exec['apt-get-update'], File['apt-autoremove']],
   }
 
   package {'emacs-snapshot':
-    ensure => latest,
     require => Ppa['emacs-snapshots'],
   }
 
@@ -89,21 +82,23 @@ class full {
 
   # Chess
   package {['scid', 'stockfish']:
-    ensure => latest,
   }
 
   # Latex
   package {['texlive', 'texlive-humanities', 'dvipng']:
-    ensure => latest,
   }
 
   # Erlang
   package {['erlang', 'erlang-manpages', 'erlang-doc']:
-    ensure => latest,
   }
 }
 
 class common {
+  Package {
+    ensure => present,
+    require => [Exec['apt-get-update'], File['apt-autoremove']],
+  }
+
   exec {'apt-get-update':
     command => '/usr/bin/apt-get update',
     refreshonly => true,
