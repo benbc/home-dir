@@ -18,33 +18,20 @@ class selector {
 
 class minimal {
   include emacs
-
-  definitions::homedir {'projects': }
-
   definitions::project {'home-dir': }
-
   definitions::vcs-link {['bin', '.gitconfig', '.bash_aliases']: }
   package {'git': }
 }
 
 class full {
   include minimal
+  include xmonad
 
-  package {['inotify-tools', 'xmonad', 'xmobar', 'trayer', 'rxvt-unicode',
-            'suckless-tools', 'graphviz', 'vpnc', 'tree', 'powertop', 'gimp', 'openssh-server',
-            'vinagre', 'ruby1.9.3', 'rubygems', 'byobu', 'inkscape', 'gnuplot']:
-  }
-
-  package {['clojure']:
+  package {['inotify-tools', 'graphviz', 'vpnc', 'tree', 'powertop', 'gimp', 'openssh-server',
+            'vinagre', 'ruby1.9.3', 'rubygems', 'byobu', 'inkscape', 'gnuplot', 'clojure']:
   }
 
   definitions::homedir {'sources': }
-
-  definitions::vcs-link {['.xmobarrc', '.Xresources', '.xsessionrc']: }
-
-  definitions::vcs-link {'xmonad.hs':
-    dir => '.xmonad',
-  }
 
   # Chess
   package {['scid', 'stockfish']:
@@ -56,6 +43,16 @@ class full {
 
   # Erlang
   package {['erlang', 'erlang-manpages', 'erlang-doc']:
+  }
+}
+
+class xmonad {
+  package {['xmonad', 'xmobar', 'trayer', 'rxvt-unicode', 'suckless-tools']: }
+
+  definitions::vcs-link {['.xmobarrc', '.Xresources', '.xsessionrc']: }
+
+  definitions::vcs-link {'xmonad.hs':
+    dir => '.xmonad',
   }
 }
 
@@ -109,6 +106,8 @@ class common {
     content=>'APT::Get::AutomaticRemove "true";
     APT::Get::Assume-Yes "true";',
   }
+
+  definitions::homedir {'projects': }
 }
 
 class definitions {
