@@ -18,9 +18,14 @@ class selector {
 
 class minimal {
   include emacs
+  include active-projects
   definitions::project {'home-dir': }
   definitions::vcs-link {['bin', '.gitconfig', '.bash_aliases']: }
   package {'git': }
+}
+
+class active-projects {
+  definitions::project {['alchemist.tex']: }
 }
 
 class full {
