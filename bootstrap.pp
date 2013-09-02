@@ -18,14 +18,11 @@ class selector {
 
 class minimal {
   include emacs
+  include latex
   include active-projects
   definitions::project {'home-dir': }
   definitions::vcs-link {['bin', '.gitconfig', '.bash_aliases']: }
   package {'git': }
-}
-
-class active-projects {
-  definitions::project {['alchemist.tex']: }
 }
 
 class full {
@@ -40,10 +37,6 @@ class full {
 
   # Chess
   package {['scid', 'stockfish']:
-  }
-
-  # Latex
-  package {['texlive', 'texlive-humanities', 'dvipng']:
   }
 
   # Erlang
@@ -88,6 +81,15 @@ class emacs {
   package {['puppet-el']:
     require => Package['emacs24'],
   }
+}
+
+class latex {
+  package {['texlive', 'texlive-humanities', 'dvipng']:
+  }
+}
+
+class active-projects {
+  definitions::project {['alchemist.tex']: }
 }
 
 class common {
